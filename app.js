@@ -1,11 +1,13 @@
 let myLibrary = [
   {
+    id: 1,
     author: 'God',
     title: 'Bible',
     pages: 1500,
     read: true
   },
   {
+    id: 2,
     author: 'rokas',
     title: 'love it',
     pages: 500,
@@ -20,7 +22,8 @@ const pagesField = document.getElementById('pages');
 const readField = document.getElementById('read');
 const submit = document.getElementById('submit');
 
-function Book(author, title, pages, read) {
+function Book(id, author, title, pages, read) {
+  this.id = id;
   this.author = author;
   this.title = title;
   this.pages = pages;
@@ -38,8 +41,9 @@ function addBookToLibrary(e) {
   let title = titleField.value;
   let pages = pagesField.value;
   let read = readField.checked;
+  let id = myLibrary[myLibrary.length - 1].id + 1
 
-  const book = new Book(author, title, pages, read);
+  const book = new Book(id, author, title, pages, read);
 
   myLibrary.push(book);
   
@@ -60,37 +64,61 @@ function resetFields() {
 submit.addEventListener('click', addBookToLibrary);
 
 function displayCards() {
-  for(const [idx, book] of myLibrary.entries()) {
-    createCard(idx, book)
+  removeAllCards()
+  console.log(myLibrary)
+  myLibrary = myLibrary.sort((bk1, bk2) => bk1.id - bk2.id)
+  console.log(myLibrary)
+  for(const book of myLibrary) {
+    createCard(book)
   }
 }
 
 function removeAllCards() {
-  
+  let child = bookList.lastElementChild;
+  while (child){
+    bookList.removeChild(child)
+    child = bookList.lastElementChild;
+  }
 }
 
-function createCard(idx, book) {
+function createCard(book) {
   const card = document.createElement('div');
   card.classList.add('card');
-  card.classList.add(`book-${idx}`)
-
 
   const author = document.createElement('p')
-  author.innerText = book.author;
+  author.innerText = `Author: ${book.author}`;
 
   const title = document.createElement('p')
-  title.innerText = book.title
+  title.innerText = `Title: ${book.title}`
 
   const pages = document.createElement('p')
-  pages.innerText = book.pages
+  pages.innerText = `Pages: ${book.pages}`
 
   const read = document.createElement('p')
-  read.innerText = book.read ? 'read' : 'not read';
+  read.innerText = `Read: ${book.read ? 'yes' : 'not yet'}`;
+
+  const removeBookButton = document.createElement('button')
+  removeBookButton.innerText = 'Remove book'
+  removeBookButton.addEventListener('click', () => {
+    myLibrary = myLibrary.filter(bk => bk.id !== book.id)
+    displayCards()
+  })
+
+  const toggleButton = document.createElement('button')
+  toggleButton.innerText = book.read ? 'Unread' : 'Read';
+  toggleButton.addEventListener('click', () => {
+    let bookToModify = myLibrary.find(bk => bk.id === book.id)
+    bookToModify.read = !bookToModify.read
+    myLibrary = [...myLibrary.filter(bk => bk.id !== book.id), bookToModify]
+    displayCards()
+  })
 
   card.appendChild(author)
   card.appendChild(title)
   card.appendChild(pages)
   card.appendChild(read)
+  card.appendChild(removeBookButton)
+  card.appendChild(toggleButton)
   bookList.appendChild(card);
 }
 

@@ -4,12 +4,12 @@
 }
 
 html {
-  height: 100vh;
+  /* height: 100vh; */
   margin: auto;
 }
 
 body {
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,6 +19,7 @@ body {
 
 form {
   padding: 20px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -31,18 +32,41 @@ input {
 .input{
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+}
+
+.input:nth-of-type(4){
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.input:nth-of-type(5){
+  flex-direction: column;
+}
+
+#submit {
+  align-self: stretch;
 }
 
 .card {
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0);
   border-radius: 3px;
   box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.1);
-  transition: 0.3s
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 #books {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 30px;
+  padding: 20px;
+}
+
+button {
+  padding: 5px;
+  margin-top: 5px;
 }
